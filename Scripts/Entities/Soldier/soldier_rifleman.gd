@@ -1,9 +1,12 @@
 extends CharacterBody2D
 
 var is_selected : bool = false
+
 @onready var marker_select: Sprite2D = $marker_selected
  
 @onready var tile_map = $"../../TileMap"
+
+@export var id_photo: Texture
 
 var speed = 1
 
@@ -97,5 +100,10 @@ func _physics_process(_delta):
 func _process(delta):
 	if is_selected == true:
 		$marker_selected.show()
+		$"../../ui_troop_info/id_photo".texture = id_photo
+		if $"../../ui_troop_info/actions/VBoxContainer/move_fast_button".button_pressed == true:
+			speed = 2
+		else:
+			speed = 1
 	else:
 		$marker_selected.hide()
