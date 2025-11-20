@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 var is_selected : bool = false
+@onready var marker_select: Sprite2D = $marker_selected
  
 @onready var tile_map = $"../../TileMap"
-# speed in pixels/sec
+
 var speed = 1
 
 var astar_grid: AStarGrid2D
@@ -36,8 +37,14 @@ func _input(event):
 		if $Sprite2D.get_rect().has_point(to_local(event.position)):
 			is_selected = true
 			print("you clicked me")
+			
+	if Input.is_action_just_pressed("action_cancel"):
+		is_selected = false
 	
-	if event.is_action_pressed("move") == false:
+	if event.is_action_pressed("action_move") == false:
+		return
+		
+	if is_selected == false:
 		return
 	
 	var id_path
@@ -72,11 +79,13 @@ func _physics_process(_delta):
 	if is_moving == false:
 		target_position = tile_map.map_to_local(current_id_path.front())
 		is_moving = true
+		
 	
 	global_position = global_position.move_toward(target_position, speed)
 	
 	if global_position == target_position:
 		current_id_path.pop_front()
+		is_selected = false
 		
 		if current_id_path.is_empty() == false:
 			target_position = tile_map.map_to_local(current_id_path.front())
@@ -87,4 +96,6 @@ func _physics_process(_delta):
 
 func _process(delta):
 	if is_selected == true:
-		pass
+		$marker_selected.show()
+	else:
+		$marker_selected.hide()
