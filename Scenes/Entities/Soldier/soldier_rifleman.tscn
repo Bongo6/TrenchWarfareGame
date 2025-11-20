@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://c66adyt04gr18"]
+
+[ext_resource type="Script" path="res://Scripts/Entities/Soldier/soldier_rifleman.gd" id="1_eq5af"]
+[ext_resource type="Texture2D" uid="uid://cvi0f4dbr4s2o" path="res://Downloads/tilemap_packed_mono.png" id="2_nbwaq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3d7gt"]
+atlas = ExtResource("2_nbwaq")
+region = Rect2(0, 112, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcafc"]
+size = Vector2(14, 14)
+
+[node name="soldier_rifleman" type="CharacterBody2D" groups=["infantry", "rifleman"]]
+script = ExtResource("1_eq5af")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["infantry", "rifleman"]]
+texture = SubResource("AtlasTexture_3d7gt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vcafc")
