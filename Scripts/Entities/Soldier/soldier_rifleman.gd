@@ -1,13 +1,10 @@
 extends CharacterBody2D
 
 var is_selected : bool = false
-var keep_moving : bool = false
 
 #actions
 var is_running : bool = false
-var action_dig : bool = false
-var action_move : bool = false
-
+var is_digging : bool = false
 
 @onready var marker_select: Sprite2D = $marker_selected
  
@@ -48,87 +45,81 @@ func _ready():
 				astar_grid.set_point_solid(tile_position)
 	
 func _input(event):
-	# select troop
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if $Sprite2D.get_rect().has_point(to_local(event.position)):
 			is_selected = true
 			print("you clicked me")
 			
-# action move stuff input
+	if Input.is_action_just_pressed("action_cancel"):
+		is_selected = false
+	
 	if event.is_action_pressed("action_move") == false:
 		return
 		
-	var id_path
+	if is_selected == false:
+		return
 	
-	if is_moving:   ## starting point will be destination
+	var id_path
+		
+	if is_moving:
 		id_path = astar_grid.get_id_path(
 			tile_map.local_to_map(target_position),
 			tile_map.local_to_map(get_global_mouse_position())
-		)
-	else:  ## if not use current position (global pos) as starting point
+	)
+	else:
 		id_path = astar_grid.get_id_path(
 			tile_map.local_to_map(global_position),
 			tile_map.local_to_map(get_global_mouse_position())
 		).slice(1)
-		
+	
 	if id_path.is_empty() == false:
 		current_id_path = id_path
 		
-			
+		current_point_path = astar_grid.get_point_path(
+			tile_map.local_to_map(target_position),
+			tile_map.local_to_map(get_global_mouse_position())
+		)
+		
+		for i in current_point_path.size():
+			current_point_path[i] = current_point_path[i] + Vector2(8, 8)
 	
-
  
 func _physics_process(_delta):
+	# action digging
+	const TILE_LAYER = 0
+	if is_digging == true:
+		$Sprite2D.modulate = Color.RED
+		var mouse_world_pos: Vector2 = get_global_mouse_position()
+		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
+		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
+		if tile_source_id != -1 && Input.is_action_just_pressed("action_accept"):
+			tile_map.set_cell(TILE_LAYER, map_cell_coords, -1)
+			astar_grid.set_point_solid(map_cell_coords, false)
+			astar_grid.update()
+	if Input.is_action_just_pressed("action_cancel"):
+		is_digging = false
+		$Sprite2D.modulate = Color.WHITE
+	
+	
 	if current_id_path.is_empty():
 		return
 		
 	if is_moving == false:
 		target_position = tile_map.map_to_local(current_id_path.front())
+		is_moving = true
 		
-	if is_selected == true or keep_moving == true:
-		global_position = global_position.move_toward(target_position, 1)
-		keep_moving = true
 	
+	global_position = global_position.move_toward(target_position, speed)
 	
-	# check if unit arrived at set position
 	if global_position == target_position:
 		current_id_path.pop_front()
+		is_selected = false
 		
-		# check if unit arrives at final destination I think
 		if current_id_path.is_empty() == false:
 			target_position = tile_map.map_to_local(current_id_path.front())
+			
 		else:
 			is_moving = false
-			is_selected = false
-			keep_moving = false
-		
-		
-		
-	
-	#cancel actions
-	if Input.is_action_just_pressed("action_cancel"):
-		action_dig = false
-		action_move = false
-		is_moving = false
-		is_selected = false
-		$Sprite2D.modulate = Color.WHITE
-	
-	# action digging
-	const TILE_LAYER = 0
-	if action_dig == true:
-		$Sprite2D.modulate = Color.RED
-		var mouse_world_pos: Vector2 = get_global_mouse_position()
-		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
-		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
-		if tile_source_id != -1 && Input.is_action_just_pressed("action_commit"):
-			tile_map.set_cell(TILE_LAYER, map_cell_coords, -1)
-			astar_grid.set_point_solid(map_cell_coords, false)
-			astar_grid.update()
-		
-		
-		
-	
-	
 			
 	
 
@@ -143,7 +134,6 @@ func _process(delta):
 		
 		$"../../ui/menu_actions".selected_troop = self
 		
-		# unit speed
 		if $"../../ui/ui_troop_info/behavior/VBoxContainer/switch_walk_slow".button_pressed == true:
 			speed = 0.5
 		else:
@@ -152,9 +142,9 @@ func _process(delta):
 		$marker_selected.hide()
 		
 		
-func call_action_dig():
-	action_dig = true
+func action_dig():
+	is_digging = true
 	
-func call_action_move():
-	action_move = true
+func action_watch():
+	pass
 	
