@@ -8,6 +8,6 @@
 script = ExtResource("1_oryxc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 99
 position = Vector2(5.25, 5.25)
-scale = Vector2(11.5, 11.5)
 texture = SubResource("PlaceholderTexture2D_3ao7a")

@@ -25,11 +25,13 @@ texture = SubResource("AtlasTexture_3d7gt")
 shape = SubResource("RectangleShape2D_vcafc")
 
 [node name="marker_selected" type="Sprite2D" parent="."]
+z_index = 5
 position = Vector2(0, -14)
 scale = Vector2(10.5, 10.5)
 texture = SubResource("PlaceholderTexture2D_dsp05")
 
 [node name="id_name" type="Label" parent="."]
+z_index = 5
 offset_left = -22.0
 offset_top = -24.0
 offset_right = 22.0
