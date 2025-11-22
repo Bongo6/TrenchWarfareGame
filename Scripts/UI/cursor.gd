@@ -3,8 +3,10 @@ extends Node2D
 @onready var menu_actions = $"../ui/menu_actions"
 @onready var cursor = $Sprite2D
 
+@export var texture_0: Texture2D = preload("res://Textures/UI/Cursor/Cursor_0.png")
 @export var texture_1: Texture2D = preload("res://Textures/UI/Cursor/Cursor_1.png")
 @export var texture_2: Texture2D = preload("res://Textures/UI/Cursor/Cursor_2.png")
+@export var texture_3: Texture2D = preload("res://Textures/UI/Cursor/Cursor_3.png")
 
 
 
@@ -19,4 +21,4 @@ func _process(delta):
 	
 	if menu_actions.selected_troop != null:
 		if menu_actions.selected_troop.is_digging == true:
-			cursor.texture = texture_2
+			cursor.texture = texture_3
