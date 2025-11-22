@@ -16,8 +16,8 @@ func _process(delta):
 
 
 func _on_button_dig_pressed():
-	selected_troop.action_dig()
+	selected_troop.call_action_dig()
 
 
-func _on_button_run_pressed():
-	selected_troop.action_run()
+func _on_button_move_pressed():
+	selected_troop.call_action_move()
