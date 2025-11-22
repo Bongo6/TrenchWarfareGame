@@ -12,9 +12,12 @@ func _process(delta):
 	if selected_troop != null:
 		$id_name.text = selected_troop.id_name
 		
-	if $Button_dig.button_pressed:
-		selected_troop.action_dig()
-		
-	if $Button_run.button_pressed:
-		selected_troop.action_run()
-	
+
+
+
+func _on_button_dig_pressed():
+	selected_troop.action_dig()
+
+
+func _on_button_run_pressed():
+	selected_troop.action_run()

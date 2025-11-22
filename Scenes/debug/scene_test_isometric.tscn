@@ -928,3 +928,6 @@ offset_top = 39.0
 offset_right = 58.0
 offset_bottom = 62.0
 text = "name"
+
+[connection signal="pressed" from="ui/menu_actions/Button_dig" to="ui/menu_actions" method="_on_button_dig_pressed"]
+[connection signal="pressed" from="ui/menu_actions/Button_run" to="ui/menu_actions" method="_on_button_run_pressed"]

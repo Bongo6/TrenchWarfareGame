@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
 var is_selected : bool = false
+
+#actions
+var is_running : bool = false
 var is_digging : bool = false
 
 @onready var marker_select: Sprite2D = $marker_selected
@@ -82,6 +85,22 @@ func _input(event):
 	
  
 func _physics_process(_delta):
+	# action digging
+	const TILE_LAYER = 0
+	if is_digging == true:
+		$Sprite2D.modulate = Color.RED
+		var mouse_world_pos: Vector2 = get_global_mouse_position()
+		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
+		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
+		if tile_source_id != -1 && Input.is_action_just_pressed("action_accept"):
+			tile_map.set_cell(TILE_LAYER, map_cell_coords, -1)
+			astar_grid.set_point_solid(map_cell_coords, false)
+			astar_grid.update()
+	if Input.is_action_just_pressed("action_cancel"):
+		is_digging = false
+		$Sprite2D.modulate = Color.WHITE
+	
+	
 	if current_id_path.is_empty():
 		return
 		
@@ -116,28 +135,16 @@ func _process(delta):
 		$"../../ui/menu_actions".selected_troop = self
 		
 		if $"../../ui/ui_troop_info/behavior/VBoxContainer/switch_walk_slow".button_pressed == true:
-			speed = 0.75
+			speed = 0.5
 		else:
-			speed = 1
+			speed = 0.75
 	else:
 		$marker_selected.hide()
 		
-		# action digging
-		const TILE_LAYER = 0
-		if is_digging == true:
-			$Sprite2D.modulate = Color.RED
-			var mouse_world_pos: Vector2 = get_global_mouse_position()
-			var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
-			var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
-			if tile_source_id != -1 && Input.is_action_just_pressed("action_accept"):
-				tile_map.set_cell(TILE_LAYER, map_cell_coords, -1)
-				astar_grid.set_point_solid(map_cell_coords, false)
-				astar_grid.update()
-		if Input.is_action_just_pressed("action_cancel"):
-			is_digging = false
-			$Sprite2D.modulate = Color.WHITE
 		
 func action_dig():
 	is_digging = true
 	
+func action_run():
+	is_running = true
 	
