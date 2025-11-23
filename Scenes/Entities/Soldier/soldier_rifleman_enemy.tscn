@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://bos7ipiydw7yg"]
+
+[ext_resource type="Script" path="res://Scripts/Entities/Soldier_enemy/soldier_rifleman_enemy.gd" id="1_y7khq"]
+[ext_resource type="Texture2D" uid="uid://b4cavhrskqypd" path="res://Downloads/tilemap_packed_below.png" id="3_ccntu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3d7gt"]
+atlas = ExtResource("3_ccntu")
+region = Rect2(0, 112, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcafc"]
+size = Vector2(14, 14)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_dsp05"]
+
+[node name="soldier_rifleman_enemy" type="CharacterBody2D" groups=["infantry", "rifleman"]]
+z_index = 1
+script = ExtResource("1_y7khq")
+id_name = "hermann"
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["infantry", "rifleman"]]
+texture_filter = 1
+texture = SubResource("AtlasTexture_3d7gt")
+
+[node name="healthbar" type="ProgressBar" parent="Sprite2D"]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = -10.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vcafc")
+
+[node name="marker_selected" type="Sprite2D" parent="."]
+visible = false
+z_index = 5
+position = Vector2(0, -14)
+scale = Vector2(10.5, 10.5)
+texture = SubResource("PlaceholderTexture2D_dsp05")
+
+[node name="id_name" type="Label" parent="."]
+visible = false
+z_index = 5
+offset_left = -22.0
+offset_top = -24.0
+offset_right = 22.0
+offset_bottom = -1.0
+theme_override_font_sizes/font_size = 7
+text = "name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sprite_state" type="Sprite2D" parent="."]

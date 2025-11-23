@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c66adyt04gr18"]
+[gd_scene load_steps=8 format=3 uid="uid://c66adyt04gr18"]
 
 [ext_resource type="Script" path="res://Scripts/Entities/Soldier/soldier_rifleman.gd" id="1_eq5af"]
 [ext_resource type="Texture2D" uid="uid://dgbsx5gdj4rxj" path="res://icon.svg" id="2_g2xp6"]
@@ -13,7 +13,10 @@ size = Vector2(14, 14)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_dsp05"]
 
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_7i2bp"]
+
 [node name="soldier_rifleman" type="CharacterBody2D" groups=["infantry", "rifleman"]]
+z_index = 1
 script = ExtResource("1_eq5af")
 id_photo = ExtResource("2_g2xp6")
 
@@ -40,3 +43,18 @@ theme_override_font_sizes/font_size = 7
 text = "name"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="sprite_state" type="Sprite2D" parent="."]
+
+[node name="muzzle_parent" type="Marker2D" parent="."]
+
+[node name="muzzle" type="Marker2D" parent="muzzle_parent"]
+position = Vector2(20, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="muzzle_parent/muzzle"]
+scale = Vector2(5.07099, 5.07099)
+texture = SubResource("PlaceholderTexture2D_7i2bp")
+
+[node name="Sprite2D" type="Sprite2D" parent="muzzle_parent"]
+scale = Vector2(5.07099, 5.07099)
+texture = SubResource("PlaceholderTexture2D_7i2bp")

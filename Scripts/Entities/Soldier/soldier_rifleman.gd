@@ -1,4 +1,14 @@
 extends CharacterBody2D
+## FRIENDLY RIFLEMAN
+
+@export var max_health : float = 10
+@export var health : float = 10
+var speed = 1
+
+## sprite state stuff
+@onready var sprite_2d_state = $sprite_state
+var sprite_state_dead = preload ("res://Textures/Icons/Soldiers/S_Icon_Skull.png")
+
 
 var is_selected : bool = false
 
@@ -20,8 +30,8 @@ var tile_id
 
 @export var id_photo: Texture
 @export var id_name : String
+@onready var sprite_2d = $Sprite2D
 
-var speed = 1
 
 var astar_grid: AStarGrid2D
 var current_id_path: Array[Vector2i]
@@ -53,7 +63,7 @@ func _ready():
 	
 func _input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if $Sprite2D.get_rect().has_point(to_local(event.position)):
+		if sprite_2d.get_rect().has_point(to_local(event.position)):
 			is_selected = true
 			print("you clicked me")
 			
@@ -93,11 +103,12 @@ func _input(event):
  
 func _physics_process(_delta):
 	$"../../ui/ui_troop_info/ID_info/display_current_mag_count".text = str(current_magazine_count)
-	
+	if health == 0:
+		state_dead()
 	# action digging
 	const TILE_LAYER = 0
 	if is_action_digging == true:
-		$Sprite2D.modulate = Color.BLUE
+		sprite_2d.modulate = Color.BLUE
 		var mouse_world_pos: Vector2 = get_global_mouse_position()
 		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
 		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
@@ -109,17 +120,19 @@ func _physics_process(_delta):
 			astar_grid.update()
 	if Input.is_action_just_pressed("action_cancel"):
 		is_action_digging = false
-		$Sprite2D.modulate = Color.WHITE
+		sprite_2d.modulate = Color.WHITE
 		
 		
 	# action supress
+	var supress_target_position = get_global_mouse_position()
+	if is_selected:
+		get_node("muzzle_parent").look_at(supress_target_position)
 	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected && empty_magazine == false:
-		$Sprite2D.modulate = Color.YELLOW
+		sprite_2d.modulate = Color.YELLOW
 		var bullet_inst = bullet.instantiate()
 		bullet_inst.shooter = self
-		bullet_inst.position = get_global_position()
-		var target_position = get_global_mouse_position()
-		var launch_direction = global_position.direction_to(target_position)
+		bullet_inst.position = get_node("muzzle_parent/muzzle").get_global_position()
+		var launch_direction = global_position.direction_to(supress_target_position)
 		bullet_inst.rotation = launch_direction.angle()
 		bullet_inst.launch_direction = launch_direction
 		bullet_inst.launch_force = bullet_inst.speed
@@ -129,7 +142,7 @@ func _physics_process(_delta):
 			print("empty mag")
 	if Input.is_action_just_pressed("action_cancel"):
 		is_action_supress = false
-		$Sprite2D.modulate = Color.WHITE
+		sprite_2d.modulate = Color.WHITE
 		
 	
 	if current_id_path.is_empty():
@@ -182,3 +195,6 @@ func action_supress():
 	is_action_supress = true
 	is_action_digging = false
 	
+func state_dead():
+	sprite_2d.modulate = Color.DARK_RED
+	sprite_2d_state.texture = sprite_state_dead

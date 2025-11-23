@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://fsceaui6kr1n"]
+[gd_scene load_steps=18 format=3 uid="uid://fsceaui6kr1n"]
 
 [ext_resource type="PackedScene" uid="uid://c66adyt04gr18" path="res://Scenes/Entities/Soldier/soldier_rifleman.tscn" id="1_emhi5"]
 [ext_resource type="Texture2D" uid="uid://p7cmih7evop2" path="res://Downloads/tilemap_packed.png" id="2_2x5xn"]
+[ext_resource type="PackedScene" uid="uid://bos7ipiydw7yg" path="res://Scenes/Entities/Soldier/soldier_rifleman_enemy.tscn" id="2_q3tu6"]
 [ext_resource type="Texture2D" uid="uid://b4cavhrskqypd" path="res://Downloads/tilemap_packed_below.png" id="3_y7w0j"]
 [ext_resource type="Script" path="res://Scripts/visuals/path.gd" id="4_1q51n"]
 [ext_resource type="Texture2D" uid="uid://08td1kj6wafi" path="res://Downloads/tilemap_iso_placeholder.png" id="4_mstt0"]
@@ -797,19 +798,30 @@ gradient = SubResource("Gradient_up7w2")
 [node name="entity_holder" type="Node2D" parent="."]
 
 [node name="soldier_rifleman" parent="entity_holder" instance=ExtResource("1_emhi5")]
-z_index = 1
 position = Vector2(249, 89)
 id_name = "New York"
 
 [node name="soldier_rifleman2" parent="entity_holder" instance=ExtResource("1_emhi5")]
-z_index = 1
 position = Vector2(821, 291)
 id_name = "idaho"
 
 [node name="soldier_rifleman3" parent="entity_holder" instance=ExtResource("1_emhi5")]
-z_index = 1
 position = Vector2(386, 167)
 id_name = "Texas"
+
+[node name="entity_holder_enemy" type="Node2D" parent="."]
+
+[node name="soldier_rifleman" parent="entity_holder_enemy" instance=ExtResource("2_q3tu6")]
+position = Vector2(1135, 137)
+id_name = ""
+
+[node name="soldier_rifleman2" parent="entity_holder_enemy" instance=ExtResource("2_q3tu6")]
+position = Vector2(691, 164)
+id_name = ""
+
+[node name="soldier_rifleman3" parent="entity_holder_enemy" instance=ExtResource("2_q3tu6")]
+position = Vector2(886, 59)
+id_name = ""
 
 [node name="TileMap" type="TileMap" parent="."]
 y_sort_enabled = true

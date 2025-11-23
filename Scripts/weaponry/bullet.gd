@@ -3,6 +3,7 @@ extends RigidBody2D
 var shooter : CharacterBody2D
 
 @export var speed = 600
+@export var damage = 4
 
 var launch_direction: Vector2 = Vector2.ZERO
 var launch_force: float = 0.0
@@ -22,3 +23,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func _on_body_entered(body):
+	body.health -= damage
+	print("shot enemy")
