@@ -913,6 +913,8 @@ alignment = 1
 
 [node name="switch_walk_slow" type="CheckButton" parent="ui/ui_troop_info/behavior/VBoxContainer"]
 layout_mode = 2
+text = "walk slow"
+alignment = 2
 
 [node name="CheckButton2" type="CheckButton" parent="ui/ui_troop_info/behavior/VBoxContainer"]
 layout_mode = 2
@@ -933,6 +935,7 @@ offset_left = 3.0
 offset_top = 5.0
 offset_right = 37.0
 offset_bottom = 36.0
+focus_mode = 0
 text = "dig"
 
 [node name="Button_supress" type="Button" parent="ui/menu_actions"]
@@ -941,6 +944,7 @@ offset_left = 39.0
 offset_top = 5.0
 offset_right = 75.0
 offset_bottom = 36.0
+focus_mode = 0
 text = "supress"
 
 [node name="id_name" type="Label" parent="ui/menu_actions"]

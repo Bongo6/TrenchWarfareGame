@@ -97,7 +97,7 @@ func _physics_process(_delta):
 	# action digging
 	const TILE_LAYER = 0
 	if is_action_digging == true:
-		$Sprite2D.modulate = Color.RED
+		$Sprite2D.modulate = Color.BLUE
 		var mouse_world_pos: Vector2 = get_global_mouse_position()
 		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
 		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
@@ -111,6 +111,7 @@ func _physics_process(_delta):
 		
 	# action supress
 	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected && empty_magazine == false:
+		$Sprite2D.modulate = Color.YELLOW
 		var bullet_inst = bullet.instantiate()
 		bullet_inst.shooter = self
 		bullet_inst.position = get_global_position()
@@ -123,7 +124,10 @@ func _physics_process(_delta):
 		if current_magazine_count <= 0:
 			empty_magazine = true
 			print("empty mag")
-	
+	if Input.is_action_just_pressed("action_cancel"):
+		is_action_supress = false
+		$Sprite2D.modulate = Color.WHITE
+		
 	
 	if current_id_path.is_empty():
 		return
@@ -169,7 +173,9 @@ func _process(delta):
 		
 func action_dig():
 	is_action_digging = true
+	is_action_supress = false
 	
 func action_supress():
 	is_action_supress = true
+	is_action_digging = false
 	
