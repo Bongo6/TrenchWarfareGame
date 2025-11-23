@@ -1,6 +1,8 @@
 extends RigidBody2D
 
-var speed = 400
+var shooter : CharacterBody2D
+
+@export var speed = 600
 
 var launch_direction: Vector2 = Vector2.ZERO
 var launch_force: float = 0.0
@@ -14,6 +16,7 @@ func _ready():
 	apply_central_impulse(launch_direction * launch_force)
 	var timer = get_tree().create_timer(lifetime)
 	timer.timeout.connect(queue_free)
+	shooter.current_magazine_count -= 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

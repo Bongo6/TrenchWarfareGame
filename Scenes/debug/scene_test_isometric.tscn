@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://Scripts/visuals/path.gd" id="4_1q51n"]
 [ext_resource type="Texture2D" uid="uid://08td1kj6wafi" path="res://Downloads/tilemap_iso_placeholder.png" id="4_mstt0"]
 [ext_resource type="Texture2D" uid="uid://cjpqifqe2wmhe" path="res://Downloads/map2.png" id="5_34cf3"]
-[ext_resource type="Script" path="res://Scripts/UI/ui_troop_info.gd" id="7_g44mf"]
 [ext_resource type="Script" path="res://Scripts/UI/menu_actions.gd" id="8_w54c0"]
 [ext_resource type="PackedScene" uid="uid://dqomob81280bi" path="res://Scenes/UI/cursor.tscn" id="9_thifh"]
 
@@ -774,6 +773,20 @@ sources/1 = SubResource("TileSetAtlasSource_mod5h")
 sources/2 = SubResource("TileSetAtlasSource_f00c8")
 sources/4 = SubResource("TileSetAtlasSource_vf2do")
 
+[sub_resource type="GDScript" id="GDScript_vrpt4"]
+script/source = "extends Control
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
 [sub_resource type="Gradient" id="Gradient_up7w2"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_41u2f"]
@@ -842,7 +855,7 @@ script = ExtResource("4_1q51n")
 [node name="ui_troop_info" type="Control" parent="ui"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("7_g44mf")
+script = SubResource("GDScript_vrpt4")
 metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="ui/ui_troop_info"]
@@ -874,6 +887,14 @@ offset_top = 524.0
 offset_right = 239.0
 offset_bottom = 576.0
 text = "soldier name"
+
+[node name="display_current_mag_count" type="Label" parent="ui/ui_troop_info/ID_info"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 552.0
+offset_right = 176.0
+offset_bottom = 575.0
+text = "10"
 
 [node name="behavior" type="Control" parent="ui/ui_troop_info"]
 anchors_preset = 0

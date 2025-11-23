@@ -7,6 +7,9 @@ var is_running : bool = false
 var is_action_digging : bool = false
 var is_action_supress : bool = false
 
+var current_magazine_count : int
+var empty_magazine : bool = false
+
 var bullet = preload("res://Scenes/Weaponry/Bullet/Rifle/bullet_303.tscn")
 
 @onready var marker_select: Sprite2D = $marker_selected
@@ -27,6 +30,7 @@ var target_position: Vector2
 var is_moving: bool
 
 func _ready():
+	current_magazine_count = 10
 	$id_name.text = id_name
 	
 	astar_grid = AStarGrid2D.new()
@@ -88,6 +92,8 @@ func _input(event):
 	
  
 func _physics_process(_delta):
+	$"../../ui/ui_troop_info/ID_info/display_current_mag_count".text = str(current_magazine_count)
+	
 	# action digging
 	const TILE_LAYER = 0
 	if is_action_digging == true:
@@ -104,8 +110,9 @@ func _physics_process(_delta):
 		$Sprite2D.modulate = Color.WHITE
 		
 	# action supress
-	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected:
+	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected && empty_magazine == false:
 		var bullet_inst = bullet.instantiate()
+		bullet_inst.shooter = self
 		bullet_inst.position = get_global_position()
 		var target_position = get_global_mouse_position()
 		var launch_direction = global_position.direction_to(target_position)
@@ -113,6 +120,9 @@ func _physics_process(_delta):
 		bullet_inst.launch_direction = launch_direction
 		bullet_inst.launch_force = bullet_inst.speed
 		get_parent().add_child(bullet_inst)
+		if current_magazine_count <= 0:
+			empty_magazine = true
+			print("empty mag")
 	
 	
 	if current_id_path.is_empty():
