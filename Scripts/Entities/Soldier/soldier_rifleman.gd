@@ -102,12 +102,15 @@ func _physics_process(_delta):
 		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
 		var tile_source_id = tile_map.get_cell_source_id(TILE_LAYER, map_cell_coords)
 		if tile_source_id != -1 && Input.is_action_just_pressed("action_accept"):
-			tile_map.set_cell(TILE_LAYER, map_cell_coords, -1)
+			var tile : Vector2 = tile_map.local_to_map(get_global_mouse_position())
+			tile_map.set_cell(0, tile, 2, Vector2i(0, 0)) ## this changes it to trench block
+			#tile_map.set_cell(TILE_LAYER, map_cell_coords, -1) ## this would delete the tile
 			astar_grid.set_point_solid(map_cell_coords, false)
 			astar_grid.update()
 	if Input.is_action_just_pressed("action_cancel"):
 		is_action_digging = false
 		$Sprite2D.modulate = Color.WHITE
+		
 		
 	# action supress
 	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected && empty_magazine == false:
