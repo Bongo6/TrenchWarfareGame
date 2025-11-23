@@ -4,7 +4,10 @@ var is_selected : bool = false
 
 #actions
 var is_running : bool = false
-var is_digging : bool = false
+var is_action_digging : bool = false
+var is_action_supress : bool = false
+
+var bullet = preload("res://Scenes/Weaponry/Bullet/Rifle/bullet_303.tscn")
 
 @onready var marker_select: Sprite2D = $marker_selected
  
@@ -87,7 +90,7 @@ func _input(event):
 func _physics_process(_delta):
 	# action digging
 	const TILE_LAYER = 0
-	if is_digging == true:
+	if is_action_digging == true:
 		$Sprite2D.modulate = Color.RED
 		var mouse_world_pos: Vector2 = get_global_mouse_position()
 		var map_cell_coords: Vector2i = tile_map.local_to_map(mouse_world_pos)
@@ -97,8 +100,19 @@ func _physics_process(_delta):
 			astar_grid.set_point_solid(map_cell_coords, false)
 			astar_grid.update()
 	if Input.is_action_just_pressed("action_cancel"):
-		is_digging = false
+		is_action_digging = false
 		$Sprite2D.modulate = Color.WHITE
+		
+	# action supress
+	if is_action_supress == true && Input.is_action_just_pressed("action_accept") && is_selected:
+		var bullet_inst = bullet.instantiate()
+		bullet_inst.position = get_global_position()
+		var target_position = get_global_mouse_position()
+		var launch_direction = global_position.direction_to(target_position)
+		bullet_inst.rotation = launch_direction.angle()
+		bullet_inst.launch_direction = launch_direction
+		bullet_inst.launch_force = bullet_inst.speed
+		get_parent().add_child(bullet_inst)
 	
 	
 	if current_id_path.is_empty():
@@ -141,10 +155,11 @@ func _process(delta):
 	else:
 		$marker_selected.hide()
 		
+	
 		
 func action_dig():
-	is_digging = true
+	is_action_digging = true
 	
-func action_watch():
-	pass
+func action_supress():
+	is_action_supress = true
 	

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://8b1bx6vuxmn0"]
+
+[ext_resource type="Script" path="res://Scripts/weaponry/bullet.gd" id="1_0hxf1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v520w"]
+size = Vector2(4, 4)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_6uico"]
+
+[node name="Bullet_303" type="RigidBody2D"]
+z_index = 4
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_0hxf1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v520w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.38419e-07, 2.38419e-07)
+scale = Vector2(4, 4)
+texture = SubResource("PlaceholderTexture2D_6uico")

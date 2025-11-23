@@ -20,5 +20,5 @@ func _process(delta):
 	global_position = get_global_mouse_position()
 	
 	if menu_actions.selected_troop != null:
-		if menu_actions.selected_troop.is_digging == true:
+		if menu_actions.selected_troop.is_action_digging == true:
 			cursor.texture = texture_3

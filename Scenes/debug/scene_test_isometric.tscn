@@ -914,13 +914,13 @@ offset_right = 37.0
 offset_bottom = 36.0
 text = "dig"
 
-[node name="Button_watch" type="Button" parent="ui/menu_actions"]
+[node name="Button_supress" type="Button" parent="ui/menu_actions"]
 layout_mode = 0
 offset_left = 39.0
 offset_top = 5.0
 offset_right = 75.0
 offset_bottom = 36.0
-text = "watch"
+text = "supress"
 
 [node name="id_name" type="Label" parent="ui/menu_actions"]
 layout_mode = 0
@@ -933,4 +933,5 @@ text = "name"
 [node name="Cursor" parent="." instance=ExtResource("9_thifh")]
 
 [connection signal="pressed" from="ui/menu_actions/Button_dig" to="ui/menu_actions" method="_on_button_dig_pressed"]
-[connection signal="pressed" from="ui/menu_actions/Button_watch" to="ui/menu_actions" method="_on_button_run_pressed"]
+[connection signal="pressed" from="ui/menu_actions/Button_supress" to="ui/menu_actions" method="_on_button_run_pressed"]
+[connection signal="pressed" from="ui/menu_actions/Button_supress" to="ui/menu_actions" method="_on_button_supress_pressed"]

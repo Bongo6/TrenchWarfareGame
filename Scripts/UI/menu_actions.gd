@@ -19,5 +19,5 @@ func _on_button_dig_pressed():
 	selected_troop.action_dig()
 
 
-func _on_button_watch_pressed():
-	selected_troop.action_watch()
+func _on_button_supress_pressed():
+	selected_troop.action_supress()
